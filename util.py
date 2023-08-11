@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-def make_coordinate_tensor(dims=(5, 5, 5)):
+def make_coordinate_tensor(dims=(28, 28, 28)):
     """Make a coordinate tensor."""
 
     coordinate_tensor = [torch.linspace(-1, 1, dims[i]) for i in range(3)]
@@ -11,6 +11,21 @@ def make_coordinate_tensor(dims=(5, 5, 5)):
     coordinate_tensor = torch.stack(coordinate_tensor, dim=3)
     print(coordinate_tensor)
     coordinate_tensor = coordinate_tensor.view([np.prod(dims), 3])
+
+    # coordinate_tensor = coordinate_tensor
+
+    return coordinate_tensor
+
+def make_coordinate_tensor_2D(dims=(28, 28)):
+    """Make a coordinate tensor."""
+
+    coordinate_tensor = [torch.linspace(-1, 1, dims[i]) for i in range(2)]
+    print(coordinate_tensor)
+    coordinate_tensor = torch.meshgrid(*coordinate_tensor)
+    print(coordinate_tensor)
+    coordinate_tensor = torch.stack(coordinate_tensor, dim=2)
+    print(coordinate_tensor)
+    coordinate_tensor = coordinate_tensor.view([np.prod(dims), 2])
 
     # coordinate_tensor = coordinate_tensor
 

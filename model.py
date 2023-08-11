@@ -224,10 +224,12 @@ class ImplicitRegistrator:
         # Initialization
         self.moving_image = moving_image
         self.fixed_image = fixed_image
-
-        self.possible_coordinate_tensor = util.make_masked_coordinate_tensor(
-            self.mask, self.fixed_image.shape
-        )
+        if self.mask:
+            self.possible_coordinate_tensor = util.make_masked_coordinate_tensor(
+                self.mask, self.fixed_image.shape
+            )
+        else:
+            self.possible_coordinate_tensor = util.make_coordinate_tensor(self.fixed_image.shape)
 
         if self.gpu:
             self.moving_image = self.moving_image.cuda()

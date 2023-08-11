@@ -13,10 +13,15 @@ kwargs["network_type"] = "SIREN"  # Options are "MLP" and "SIREN"
 kwargs["save_folder"] = out_dir + str(case_id)
 kwargs["mask"] = False
 
-srcimg = cv2.imread("D:\Renyi\IsoNet\\n01983481_171.JPEG")
+srcimg = cv2.imread("n01983481_171.JPEG")
+print('2222')
 dstimg = warp.B_spline_form(srcimg)
+print(dstimg.shape)
+srcimg = dstimg[:, :, 1]
+dstimg = srcimg[:, :, 1]
 
 ImpReg = model.ImplicitRegistrator(dstimg, srcimg, **kwargs)
+print('fit')
 ImpReg.fit()
 coordinate_tensor = torch.FloatTensor(dstimg)
 output = ImpReg(coordinate_tensor)

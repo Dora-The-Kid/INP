@@ -222,8 +222,8 @@ class ImplicitRegistrator:
         )
 
         # Initialization
-        self.moving_image = moving_image
-        self.fixed_image = fixed_image
+        self.moving_image = torch.tensor(moving_image)
+        self.fixed_image = torch.tensor(fixed_image)
         if self.mask:
             self.possible_coordinate_tensor = util.make_masked_coordinate_tensor(
                 self.mask, self.fixed_image.shape
@@ -306,7 +306,7 @@ class ImplicitRegistrator:
 
         loss = 0
         indices = torch.randperm(
-            self.possible_coordinate_tensor.shape[0], device="cuda"
+            self.possible_coordinate_tensor.shape[0]
         )[: self.batch_size]
         coordinate_tensor = self.possible_coordinate_tensor[indices, :]
         coordinate_tensor = coordinate_tensor.requires_grad_(True)

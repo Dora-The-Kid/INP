@@ -54,6 +54,7 @@ def fast_trilinear_interpolation(input_array, x_indices, y_indices, z_indices):
     y = y_indices - y0
     z = z_indices - z0
 
+
     output = (
         input_array[x0, y0, z0] * (1 - x) * (1 - y) * (1 - z)
         + input_array[x1, y0, z0] * x * (1 - y) * (1 - z)
@@ -88,14 +89,14 @@ def make_coordinate_slice(dims=(28, 28), dimension=0, slice_pos=0, gpu=True):
 
 
 
-a = make_coordinate_tensor()
-indices = torch.randperm(
-            a.shape[0]
-        )[: 50]
-a = a[indices, :]
-print(a)
-print(a.shape)
-plt.figure()
-ax = plt.axes(projection ="3d")
-ax.scatter3D(a[:,0],a[:,1],a[:,2])
-plt.show()
+# a = make_coordinate_tensor()
+# indices = torch.randperm(
+#             a.shape[0]
+#         )[: 50]
+# a = a[indices, :]
+# print(a)
+# print(a.shape)
+# plt.figure()
+# ax = plt.axes(projection ="3d")
+# ax.scatter3D(a[:,0],a[:,1],a[:,2])
+# plt.show()

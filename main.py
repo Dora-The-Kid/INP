@@ -2,6 +2,8 @@ import model
 import cv2
 import warp
 import torch
+import numpy as np
+print('ttttttttttttttttttttttttttt')
 case_id = '0'
 out_dir = 'out'
 kwargs = {}
@@ -14,14 +16,19 @@ kwargs["save_folder"] = out_dir + str(case_id)
 kwargs["mask"] = False
 
 srcimg = cv2.imread("n01983481_171.JPEG")
-print('2222')
-dstimg = warp.B_spline_form(srcimg)
-print(dstimg.shape)
-srcimg = dstimg[:, :, 1]
-dstimg = srcimg[:, :, 1]
 
+dstimg = warp.B_spline_form(srcimg)
+dstimg = np.array(dstimg)
+print(dstimg.shape)
+srcimg = srcimg[:, :, 1]
+dstimg = dstimg[:, :, 1]
+srcimg = np.tile(srcimg,[224,1,1])
+dstimg = np.tile(dstimg,[224,1,1])
+print(srcimg.shape)
 ImpReg = model.ImplicitRegistrator(dstimg, srcimg, **kwargs)
 print('fit')
 ImpReg.fit()
 coordinate_tensor = torch.FloatTensor(dstimg)
 output = ImpReg(coordinate_tensor)
+output = np.array(output)
+np.save('tran_matrix.npy')

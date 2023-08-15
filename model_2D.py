@@ -18,9 +18,7 @@ class ImplicitRegistrator:
 
         # Use standard coordinate tensor if none is given
         if coordinate_tensor is None:
-            coordinate_tensor = util.make_coordinate_slice(
-                output_shape, dimension, slice_pos
-            )
+            coordinate_tensor = util.make_coordinate_tensor_2D()
 
         output = self.network(coordinate_tensor)
 
@@ -229,7 +227,7 @@ class ImplicitRegistrator:
                 self.mask, self.fixed_image.shape
             )
         else:
-            self.possible_coordinate_tensor = util.make_coordinate_tensor(self.fixed_image.shape)
+            self.possible_coordinate_tensor = util.make_coordinate_tensor_2D(self.fixed_image.shape)
 
         if self.gpu:
             self.moving_image = self.moving_image.cuda()
@@ -316,11 +314,10 @@ class ImplicitRegistrator:
         output = coord_temp
 
         transformed_image = self.transform_no_add(coord_temp)
-        fixed_image = util.fast_trilinear_interpolation(
+        fixed_image = util.fast_trilinear_interpolation_2D(
             self.fixed_image,
             coordinate_tensor[:, 0],
             coordinate_tensor[:, 1],
-            coordinate_tensor[:, 2],
         )
 
         # Compute the loss
@@ -373,11 +370,10 @@ class ImplicitRegistrator:
 
         # From relative to absolute
         transformation = torch.add(transformation, coordinate_tensor)
-        return util.fast_trilinear_interpolation(
+        return util.fast_trilinear_interpolation_2D(
             moving_image,
             transformation[:, 0],
             transformation[:, 1],
-            transformation[:, 2],
         )
 
     def transform_no_add(self, transformation, moving_image=None, reshape=False):
@@ -387,11 +383,10 @@ class ImplicitRegistrator:
         if moving_image is None:
             moving_image = self.moving_image
         # print('GET MOVING')
-        return util.fast_trilinear_interpolation(
+        return util.fast_trilinear_interpolation_2D(
             moving_image,
             transformation[:, 0],
             transformation[:, 1],
-            transformation[:, 2],
         )
 
     def fit(self, epochs=None, red_blue=False):

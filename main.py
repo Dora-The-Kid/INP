@@ -1,4 +1,4 @@
-import model
+import model_2D
 import cv2
 import warp
 import torch
@@ -25,7 +25,7 @@ dstimg = dstimg[:, :, 1]
 srcimg = np.tile(srcimg,[224,1,1])
 dstimg = np.tile(dstimg,[224,1,1])
 print(srcimg.shape)
-ImpReg = model.ImplicitRegistrator(dstimg, srcimg, **kwargs)
+ImpReg = model_2D.ImplicitRegistrator(dstimg, srcimg, **kwargs)
 print('fit')
 ImpReg.fit()
 coordinate_tensor = torch.FloatTensor(dstimg)

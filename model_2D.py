@@ -329,6 +329,7 @@ class ImplicitRegistrator:
 
         # Relativation of output
         output_rel = torch.subtract(output, coordinate_tensor)
+        print(coordinate_tensor.shape)
 
         # Regularization
         if self.jacobian_regularization:
@@ -336,11 +337,11 @@ class ImplicitRegistrator:
                 coordinate_tensor, output_rel, batch_size=self.batch_size
             )
         if self.hyper_regularization:
-            loss += self.alpha_hyper * regularizers.compute_hyper_elastic_loss(
+            loss += self.alpha_hyper * regularizers.compute_hyper_elastic_loss_2D(
                 coordinate_tensor, output_rel, batch_size=self.batch_size
             )
         if self.bending_regularization:
-            loss += self.alpha_bending * regularizers.compute_bending_energy(
+            loss += self.alpha_bending * regularizers.compute_bending_energy_2D(
                 coordinate_tensor, output_rel, batch_size=self.batch_size
             )
 

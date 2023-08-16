@@ -67,7 +67,7 @@ def fast_trilinear_interpolation(input_array, x_indices, y_indices, z_indices):
     )
     return output
 
-def fast_trilinear_interpolation_2D(input_array, x_indices, y_indices, z_indices):
+def fast_trilinear_interpolation_2D(input_array, x_indices, y_indices):
     x_indices = (x_indices + 1) * (input_array.shape[0] - 1) * 0.5
     y_indices = (y_indices + 1) * (input_array.shape[1] - 1) * 0.5
 

@@ -317,7 +317,7 @@ class ImplicitRegistrator:
         fixed_image = util.fast_trilinear_interpolation_2D(
             self.fixed_image,
             coordinate_tensor[:, 0],
-            coordinate_tensor[:, 1],
+            coordinate_tensor[:, 1]
         )
 
         # Compute the loss
@@ -373,7 +373,7 @@ class ImplicitRegistrator:
         return util.fast_trilinear_interpolation_2D(
             moving_image,
             transformation[:, 0],
-            transformation[:, 1],
+            transformation[:, 1]
         )
 
     def transform_no_add(self, transformation, moving_image=None, reshape=False):

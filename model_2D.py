@@ -257,7 +257,7 @@ class ImplicitRegistrator:
 
         self.args["lr"] = 0.00001
         self.args["batch_size"] = 10000
-        self.args["layers"] = [3, 256, 256, 256, 3]
+        self.args["layers"] = [2, 256, 256, 256, 2]
         self.args["velocity_steps"] = 1
 
         # Define argument defaults specific to this class

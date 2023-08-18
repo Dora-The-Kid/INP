@@ -7,6 +7,8 @@ import ncc
 import util
 import networks
 import regularizers
+from torch.utils.tensorboard import SummaryWriter
+writer = SummaryWriter('network_tensorboard')
 
 class ImplicitRegistrator:
     """This is a class for registrating implicitly represented images."""
@@ -18,7 +20,8 @@ class ImplicitRegistrator:
 
         # Use standard coordinate tensor if none is given
         if coordinate_tensor is None:
-            coordinate_tensor = util.make_coordinate_tensor_2D()
+            coordinate_tensor = util.make_coordinate_tensor_2D(output_shape)
+        # print(coordinate_tensor.shape)
 
         output = self.network(coordinate_tensor)
 
@@ -26,6 +29,7 @@ class ImplicitRegistrator:
         coord_temp = torch.add(output, coordinate_tensor)
 
         transformed_image = self.transform_no_add(coord_temp)
+        print(transformed_image.shape,'++++++++++')
         return (
             transformed_image.cpu()
             .detach()
@@ -90,6 +94,7 @@ class ImplicitRegistrator:
         # Make loss list to save losses
         self.loss_list = [0 for _ in range(self.epochs)]
         self.data_loss_list = [0 for _ in range(self.epochs)]
+        self.loss = 0
 
         # Set seed
         torch.manual_seed(self.args["seed"])
@@ -274,11 +279,11 @@ class ImplicitRegistrator:
         self.args["bending_regularization"] = False
         self.args["alpha_bending"] = 10.0
 
-        self.args["image_shape"] = (200, 200)
+        self.args["image_shape"] = (224, 224)
 
         self.args["network"] = None
 
-        self.args["epochs"] = 2500
+        self.args["epochs"] = 2000
         self.args["log_interval"] = self.args["epochs"] // 4
         self.args["verbose"] = True
         self.args["save_folder"] = "output"
@@ -308,7 +313,6 @@ class ImplicitRegistrator:
         )[: self.batch_size]
         coordinate_tensor = self.possible_coordinate_tensor[indices, :]
         coordinate_tensor = coordinate_tensor.requires_grad_(True)
-
         output = self.network(coordinate_tensor)
         coord_temp = torch.add(output, coordinate_tensor)
         output = coord_temp
@@ -346,7 +350,7 @@ class ImplicitRegistrator:
             )
 
         # Perform the backpropagation and update the parameters accordingly
-
+        self.loss = loss
         for param in self.network.parameters():
             param.grad = None
         loss.backward()
@@ -404,8 +408,14 @@ class ImplicitRegistrator:
         if not len(self.loss_list) == epochs:
             self.loss_list = [0 for _ in range(epochs)]
             self.data_loss_list = [0 for _ in range(epochs)]
+        dummy_input = torch.rand(1000,2)  # 网络中输入的数据维度
+        with SummaryWriter(comment='LeNet') as w:
+            w.add_graph(self.network, (dummy_input,))  # net是你的网络名
 
         # Perform training iterations
         for i in tqdm.tqdm(range(epochs)):
             self.training_iteration(i)
+            writer.add_scalar('train/loss', self.loss, i)  # 画loss，横坐标为epoch
+        writer.close()
+
 

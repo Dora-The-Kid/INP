@@ -3,7 +3,6 @@ import cv2
 import warp
 import torch
 import numpy as np
-import util
 print('ttttttttttttttttttttttttttt')
 case_id = '0'
 out_dir = 'out'
@@ -29,12 +28,7 @@ print(srcimg.shape)
 ImpReg = model_2D.ImplicitRegistrator(dstimg, srcimg, **kwargs)
 print('fit')
 ImpReg.fit()
-torch.save(ImpReg,'model')
 coordinate_tensor = torch.FloatTensor(dstimg)
-output = ImpReg(output_shape=(254,254))
+output = ImpReg(coordinate_tensor)
 output = np.array(output)
-output = (output-np.min(output))/(np.max(output)-np.min(output))
-print(output.shape)
-cv2.imshow('image',output)
-cv2.waitKey(0)
-np.save('tran_matrix.npy',output)
+np.save('tran_matrix.npy')

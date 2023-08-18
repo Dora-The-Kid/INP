@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ae4aa6dd-558e-462b-ae60-997340d13ce5" name="Changes" comment="2023.08.17">
+    <list default="true" id="ae4aa6dd-558e-462b-ae60-997340d13ce5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_2D.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_2D.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -130,7 +128,14 @@
       <option name="project" value="LOCAL" />
       <updated>1692215270383</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="2023.08.18">
+      <created>1692325689878</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1692325689878</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -147,7 +152,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="2023.08.11" />
     <MESSAGE value="2023.08.17" />
-    <option name="LAST_COMMIT_MESSAGE" value="2023.08.17" />
+    <MESSAGE value="2023.08.18" />
+    <option name="LAST_COMMIT_MESSAGE" value="2023.08.18" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

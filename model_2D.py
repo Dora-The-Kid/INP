@@ -283,7 +283,7 @@ class ImplicitRegistrator:
 
         self.args["network"] = None
 
-        self.args["epochs"] = 2000
+        self.args["epochs"] = 100
         self.args["log_interval"] = self.args["epochs"] // 4
         self.args["verbose"] = True
         self.args["save_folder"] = "output"
@@ -409,13 +409,15 @@ class ImplicitRegistrator:
             self.loss_list = [0 for _ in range(epochs)]
             self.data_loss_list = [0 for _ in range(epochs)]
         dummy_input = torch.rand(1000,2)  # 网络中输入的数据维度
-        with SummaryWriter(comment='LeNet') as w:
+        with SummaryWriter("runs/2023_8_8") as w:
             w.add_graph(self.network, (dummy_input,))  # net是你的网络名
 
         # Perform training iterations
+        writer = SummaryWriter("runs/2023_8_8")
         for i in tqdm.tqdm(range(epochs)):
             self.training_iteration(i)
-            writer.add_scalar('train/loss', self.loss, i)  # 画loss，横坐标为epoch
+            writer.add_scalar(tag="loss/train", scalar_value=self.loss,
+                              global_step=i)  # 画loss，横坐标为epoch
         writer.close()
 
 

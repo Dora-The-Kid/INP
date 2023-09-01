@@ -39,6 +39,7 @@ class ImplicitRegistrator:
 
     def __init__(self, moving_image, fixed_image, **kwargs):
         """Initialize the learning model."""
+        self.deformation_field = None
 
         # Set all default arguments in a dict: self.args
         self.set_default_arguments()
@@ -409,15 +410,19 @@ class ImplicitRegistrator:
             self.loss_list = [0 for _ in range(epochs)]
             self.data_loss_list = [0 for _ in range(epochs)]
         dummy_input = torch.rand(1000,2)  # 网络中输入的数据维度
-        with SummaryWriter("runs/2023_8_8") as w:
+        with SummaryWriter("runs/2023_8_24") as w:
             w.add_graph(self.network, (dummy_input,))  # net是你的网络名
 
         # Perform training iterations
-        writer = SummaryWriter("runs/2023_8_8")
+        writer = SummaryWriter("runs/2023_8_24")
         for i in tqdm.tqdm(range(epochs)):
             self.training_iteration(i)
             writer.add_scalar(tag="loss/train", scalar_value=self.loss,
                               global_step=i)  # 画loss，横坐标为epoch
         writer.close()
+        coordinate_tensor = util.make_coordinate_tensor_2D(self.moving_image.shape)
+        output = self.network(coordinate_tensor)
+        coord_temp = torch.add(output, coordinate_tensor)
+        self.deformation_field = torch.reshape(coord_temp,((self.moving_image.shape[0],self.moving_image.shape[1],2)))
 
 

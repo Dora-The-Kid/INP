@@ -761,28 +761,28 @@ def B_spline_form(srcimg, delta_x=32, delta_y=32):
 
     return dstimg
 
-if __name__ == "__main__":
-    srcimg = cv2.imread("D:\Renyi\IsoNet\\n01983481_171.JPEG")
-    dstimg = B_spline_form(srcimg)
-
-
-    diff = cv2.subtract(dstimg, srcimg)
-    # cv2.imshow("Original Image", srcimg)
-    # cv2.imshow("B_spline_form", dstimg)
-    # cv2.imshow("Difference", diff)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
-    img =dstimg[:, :, 1]
-    template =srcimg[:,:,1]
-    strides =[10,10]
-    overlaps =[2,2]
-    max_shifts =[50,50]
-    re, total_shifts, _, _ = tile_and_correct(img,template,strides,overlaps,max_shifts,add_to_movie=0,shifts_opencv=True)
-    cv2.imshow("Original Image", template)
-    cv2.imshow("B_spline_form", img)
-    re = (re-np.min(re))/(np.max(re)-np.min(re))
-    cv2.imshow("correct",re)
-    cv2.waitKey(0)
+# if __name__ == "__main__":
+#     srcimg = cv2.imread("D:\Renyi\IsoNet\\n01983481_171.JPEG")
+#     dstimg = B_spline_form(srcimg)
+#
+#
+#     diff = cv2.subtract(dstimg, srcimg)
+#     # cv2.imshow("Original Image", srcimg)
+#     # cv2.imshow("B_spline_form", dstimg)
+#     # cv2.imshow("Difference", diff)
+#     # cv2.waitKey(0)
+#     # cv2.destroyAllWindows()
+#     img =dstimg[:, :, 1]
+#     template =srcimg[:,:,1]
+#     strides =[10,10]
+#     overlaps =[2,2]
+#     max_shifts =[50,50]
+#     re, total_shifts, _, _ = tile_and_correct(img,template,strides,overlaps,max_shifts,add_to_movie=0,shifts_opencv=True)
+#     cv2.imshow("Original Image", template)
+#     cv2.imshow("B_spline_form", img)
+#     re = (re-np.min(re))/(np.max(re)-np.min(re))
+#     cv2.imshow("correct",re)
+#     cv2.waitKey(0)
 
 
 

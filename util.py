@@ -115,14 +115,49 @@ def make_coordinate_slice(dims=(28, 28), dimension=0, slice_pos=0, gpu=True):
 
     return coordinate_tensor
 
-a = make_coordinate_slice(dims=(5,5),gpu=False)
-indices = torch.randperm(
-            a.shape[0]
-        )
-a = a[indices, :]
-print(a)
-print(a.shape)
-plt.figure()
-ax = plt.axes(projection ="3d")
-ax.scatter3D(a[:,0],a[:,1],a[:,2])
-plt.show()
+
+def grid2contour(grid):
+    '''
+    grid--image_grid used to show deform field
+    type: numpy ndarray, shape： (h, w, 2), value range：(-1, 1)
+    '''
+    assert grid.ndim == 3
+    x = np.arange(-1, 1, 2 / grid.shape[1])
+    y = np.arange(-1, 1, 2 / grid.shape[0])
+    X, Y = np.meshgrid(x, y)
+    Z1 = grid[:, :, 0] + 2  # remove the dashed line
+    Z1 = Z1[::-1]  # vertical flip
+    Z2 = grid[:, :, 1] + 2
+
+    plt.figure()
+    plt.contour(X, Y, Z1, 22, colors='k')
+    plt.contour(X, Y, Z2, 22, colors='k')
+    plt.xticks(()), plt.yticks(())  # remove x, y ticks
+    plt.title('deform field')
+    # plt.show()
+def create_grid_image(size, path):
+    num1, num2 = (size[0] + 10) // 10, (size[1] + 10) // 10  # 改变除数（10），即可改变网格的密度
+    x, y = np.meshgrid(np.linspace(-2, 2, num1), np.linspace(-2, 2, num2))
+
+    plt.figure(figsize=((size[0] + 10) / 100.0, (size[1] + 10) / 100.0))  # 指定图像大小
+    plt.plot(x, y, color="black")
+    plt.plot(x.transpose(), y.transpose(), color="black")
+    plt.axis('off')  # 不显示坐标轴
+    # 去除白色边框
+    plt.gca().xaxis.set_major_locator(plt.NullLocator())
+    plt.gca().yaxis.set_major_locator(plt.NullLocator())
+    plt.subplots_adjust(top=1, bottom=0, left=0, right=1, hspace=0, wspace=0)
+    plt.margins(0, 0)
+    plt.savefig(path)
+create_grid_image((224,224),'test.png')
+# a = make_coordinate_slice(dims=(5,5),gpu=False)
+# indices = torch.randperm(
+#             a.shape[0]
+#         )
+# a = a[indices, :]
+# print(a)
+# print(a.shape)
+# plt.figure()
+# ax = plt.axes(projection ="3d")
+# ax.scatter3D(a[:,0],a[:,1],a[:,2])
+# plt.show()

@@ -1,6 +1,7 @@
 import cv2
+import matplotlib.pyplot as plt
 import numpy as np
-
+import util
 def B_spline(u, flag):
     if flag == 0:
         return (1 - u**3 + 3 * u**2 - 3 * u) / 6.0
@@ -48,7 +49,12 @@ def B_spline_form(srcimg, delta_x=32, delta_y=32):
 
             offset[x, y, 0] = Tx
             offset[x, y, 1] = Ty
-
+    row = np.arange(dstimg.shape[0]).reshape([dstimg.shape[0],-1])
+    col = np.arange(dstimg.shape[1]).reshape([-1,dstimg.shape[1]])
+    offset_add =offset.copy()
+    offset_add[:,:,0] = offset_add[:,:,0]+row
+    offset_add[:, :, 1] = offset_add[:, :, 1] + col
+    util.grid2contour(offset_add)
     for row in range(dstimg.shape[0]):
         for col in range(dstimg.shape[1]):
             src_x = row + offset[row, col, 0]
@@ -72,5 +78,13 @@ def B_spline_form(srcimg, delta_x=32, delta_y=32):
                     (x2 - src_x) * (y1 - src_y) * pointc[2] + (x1 - src_x) * (y1 - src_y) * pointd[2]
 
                 dstimg[row, col] = [B, G, R]
+    # plt.figure()
+    # plt.imshow(dstimg)
+    # plt.show()
 
     return dstimg
+
+if __name__ == '__main__':
+    np.random.seed(42)
+    img = cv2.imread('test.png')
+    B_spline_form(img)
